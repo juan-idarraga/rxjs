@@ -1,4 +1,4 @@
-import {Observable, Observer} from 'rxjs';
+import {Observable, Observer, Subject} from 'rxjs';
 
 const observer: Observer<any> = {
     next: value => console.log('next', value),
@@ -7,24 +7,35 @@ const observer: Observer<any> = {
 }
 
 const interval$ = new Observable<number>( subscriber => {
-    let count = 0
-    const interval = setInterval(()=>{
-        subscriber.next(count++)
-        console.log(count)
-    }, 1000);
-
-    // setTimeout(() => {
-    //     subscriber.complete() //run complete and return
-    // }, 2000);
-
+    const intervalID = setInterval(
+        ()=>subscriber.next( Math.random()), 1000
+    )
+    
     return () => {
-        clearInterval(interval)
-        console.log('interval finalizado')
+        clearInterval( intervalID )
+        console.log('interval destroyed')
     }
 })
 
-const subscription = interval$.subscribe( observer )
 
-setTimeout(()=>{
-    subscription.unsubscribe() // run the return
-}, 4000)
+// casteo multiple, es un observer, tiene next() error() y complete()
+const subject$ = new Subject()
+
+const intervalSubject = interval$.subscribe(subject$)
+
+
+// no se subscribe al interval sino al subject
+const firstSubscription = subject$.subscribe( observer )
+const secondSubscription = subject$.subscribe( observer )
+
+
+setTimeout(() => {
+    subject$.next(10)
+    subject$.complete() // es el complete del subject$ no del interval$ por eso no va a ejecutar el return
+
+    intervalSubject.unsubscribe()
+}, 3500);
+
+
+// const subscription = interval$.subscribe( observer )
+// observer.next(5)
