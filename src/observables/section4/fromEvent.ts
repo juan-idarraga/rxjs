@@ -1,3 +1,4 @@
+
 import { fromEvent } from "rxjs";
 
 // eventos del dom
