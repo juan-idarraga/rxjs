@@ -37,7 +37,7 @@ const user: UserType[] = [
 
 
 const state$ = from(user).pipe(
-    scan<UserType>( (acc,cur) => {
+    reduce<UserType>( (acc,cur) => {
         return { ...acc, ...cur}
     }, {age:30})
 )
