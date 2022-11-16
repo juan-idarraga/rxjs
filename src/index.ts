@@ -1,12 +1,44 @@
-//auditTime(observable) cuando emite espera el tiempo t y muestra lo mas reciente que se haya emitido
-import { auditTime, fromEvent, interval, map, sample, tap } from "rxjs";
+import { catchError, of } from "rxjs";
+import { ajax, AjaxError } from "rxjs/ajax";
 
-const click$ = fromEvent<MouseEvent>(document, "click");
+//const url = "https://api.github.com/users?per_page=5";
+const url = "https://httpbin.org/delay/1";
 
-click$
-  .pipe(
-    map(({ x }) => x),
-    tap((val) => console.log("tap", val)),
-    auditTime(2000)
+//ajax.get(url, {});
+
+ajax
+  .put(
+    url,
+    {
+      id: 1,
+      name: "Juan",
+    },
+    {
+      token: "dsdsd",
+    }
   )
   .subscribe(console.log);
+
+ajax
+  .post(
+    url,
+    {
+      id: 1,
+      name: "Juan",
+    },
+    {
+      token: "dsdsd",
+    }
+  )
+  .subscribe(console.log);
+
+ajax({
+  url,
+  method: "PUT",
+  headers: {
+    token: "dsds",
+  },
+  body: {
+    id: 1,
+  },
+}).subscribe(console.log);
