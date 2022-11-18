@@ -1,5 +1,4 @@
-//mergeAll es para tratar observable que devuelven otro observable
-
+//switchMap los observables hijos se van completando y si hay nueva emision interrumpe las anteriores
 import {
   debounceTime,
   fromEvent,
