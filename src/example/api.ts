@@ -35,7 +35,3 @@ const submitForm$ = fromEvent<Event>(form, "submit").pipe(
   //   mergeMap(HttpRequest)
   switchMap(HttpRequest)
 );
-
-submitForm$.subscribe((token) => {
-  console.log(token);
-});
